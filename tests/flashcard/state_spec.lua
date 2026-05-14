@@ -67,7 +67,11 @@ describe("state.load — corrupt sidecar", function()
 end)
 
 describe("state.sidecar_path", function()
-  it("derives sidecar from deck path", function()
+  it("derives sidecar from a POSIX deck path", function()
     assert.equals("/a/b/geography.state.json", state.sidecar_path("/a/b/geography.md"))
+  end)
+
+  it("derives sidecar from a Windows deck path", function()
+    assert.equals("C:\\decks\\geography.state.json", state.sidecar_path("C:\\decks\\geography.md"))
   end)
 end)

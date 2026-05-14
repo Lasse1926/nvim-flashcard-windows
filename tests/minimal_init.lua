@@ -1,4 +1,5 @@
-local plenary_dir = os.getenv("PLENARY_DIR") or "/tmp/plenary.nvim"
+local plenary_dir = os.getenv("PLENARY_DIR")
+  or (vim.fn.stdpath("data") .. "/site/pack/deps/opt/plenary.nvim")
 if vim.fn.isdirectory(plenary_dir) == 0 then
   vim.fn.system({
     "git",

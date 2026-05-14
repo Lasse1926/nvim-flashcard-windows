@@ -20,7 +20,7 @@ function M.pick(items, opts, on_choose)
       finder = finders.new_table({
         results = items,
         entry_maker = function(d)
-          return { value = d, display = d.name, ordinal = d.name }
+          return { value = d, display = d.name, ordinal = d.name, file = d.path }
         end,
       }),
       sorter = conf.generic_sorter({}),

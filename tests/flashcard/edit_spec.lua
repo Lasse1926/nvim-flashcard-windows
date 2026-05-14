@@ -45,7 +45,7 @@ describe("flashcard.edit — by name", function()
     restore_edit()
 
     assert.equals(1, #edits)
-    assert.truthy(edits[1]:match("/geo%.md$"))
+    assert.truthy(edits[1]:match("[/\\]geo%.md$"))
   end)
 
   it("notifies ERROR when the named deck does not exist", function()

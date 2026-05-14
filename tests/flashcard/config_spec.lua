@@ -25,7 +25,7 @@ describe("config.setup", function()
 
   it("expands the decks_dir path", function()
     local c = config.setup({ decks_dir = "~/flashcards" })
-    assert.truthy(c.decks_dir:match("^/"))
+    assert.truthy(c.decks_dir:match("^[/\\a-zA-Z]"))
     assert.equals(0, (c.decks_dir:find("~") or 0))
   end)
 

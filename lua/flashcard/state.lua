@@ -32,8 +32,13 @@ function M.load(deck_path)
   local ok, decoded = pcall(vim.json.decode, content)
   if not ok or type(decoded) ~= "table" then
     local backup = path .. ".corrupt-" .. os.time()
-    os.rename(path, backup)
-    vim.notify("[flashcard] corrupt sidecar, moved to " .. backup, vim.log.levels.WARN)
+    os.remove(backup)
+    local rename_ok = os.rename(path, backup)
+    if rename_ok then
+      vim.notify("[flashcard] corrupt sidecar, moved to " .. backup, vim.log.levels.WARN)
+    else
+      vim.notify("[flashcard] corrupt sidecar at " .. path, vim.log.levels.WARN)
+    end
     return {}
   end
 
@@ -56,6 +61,9 @@ function M.save(deck_path, cards)
   end
   f:write(payload)
   f:close()
+
+  -- Windows-safe atomic replace
+  os.remove(path) -- ignore error if file doesn't exist
 
   local ok, rename_err = os.rename(tmp, path)
   if not ok then

@@ -26,7 +26,7 @@ end
 --- @return table config
 function M.setup(user_opts)
   local cfg = vim.tbl_deep_extend("force", defaults(), user_opts or {})
-  cfg.decks_dir = vim.fn.expand(cfg.decks_dir)
+  cfg.decks_dir = vim.fn.expand(cfg.decks_dir):gsub("\\", "/")
   return cfg
 end
 

@@ -105,7 +105,7 @@ describe("flashcard.overview — by name", function()
     restore_edit()
 
     assert.equals(1, #edits)
-    assert.truthy(edits[1]:match("/geo%.md$"))
+    assert.truthy(edits[1]:match("[/\\]geo%.md$"))
   end)
 end)
 
