@@ -1,6 +1,6 @@
 local M = {}
 
-local VERBS = { learn = true, edit = true, create = true, overview = true }
+local VERBS = { learn = true, edit = true, create = true, overview = true, reset = true }
 
 --- Parse :Flashcard args into a {verb, name} pair.
 --- @param fargs string[]    args from vim.api user-command opts
@@ -34,7 +34,7 @@ end
 --- @param arg_lead string
 --- @param names_fn fun(): string[]
 function M.complete(arg_lead, names_fn)
-  local candidates = { "learn", "edit", "create", "overview" }
+  local candidates = { "learn", "edit", "create", "overview", "reset" }
   for _, n in ipairs(names_fn()) do
     table.insert(candidates, n)
   end
@@ -46,7 +46,7 @@ end
 --- @param arg_lead string
 --- @param names_fn fun(): string[]
 function M.complete_arg(verb, arg_lead, names_fn)
-  if verb == "learn" or verb == "edit" or verb == "overview" then
+  if verb == "learn" or verb == "edit" or verb == "overview" or verb == "reset" then
     return prefix_filter(names_fn(), arg_lead)
   end
   -- `create` takes a new name; nothing to complete

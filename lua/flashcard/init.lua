@@ -292,6 +292,40 @@ function M.overview(deck_name)
   picker_mod.pick(decks, { prompt = "Overview deck", cfg = cfg }, open_overview)
 end
 
+--- Reset scheduling data for a deck. If `deck_name` is nil, show the picker.
+function M.reset(deck_name)
+  ensure_cfg()
+  local decks = deck_mod.list(cfg.decks_dir)
+
+  local function do_reset(deck_info)
+    local msg = "Reset scheduling data for '" .. deck_info.name .. "'?"
+    local choice = vim.fn.confirm(msg, "&Yes\n&No", 2)
+    if choice ~= 1 then
+      return
+    end
+    state_mod.save(deck_info.path, {})
+    vim.notify("[flashcard] reset scheduling data for " .. deck_info.name, vim.log.levels.INFO)
+  end
+
+  if deck_name and deck_name ~= "" then
+    for _, d in ipairs(decks) do
+      if d.name == deck_name then
+        do_reset(d)
+        return
+      end
+    end
+    vim.notify("[flashcard] deck not found: " .. deck_name, vim.log.levels.ERROR)
+    return
+  end
+
+  if #decks == 0 then
+    vim.notify("[flashcard] no decks found at " .. cfg.decks_dir, vim.log.levels.WARN)
+    return
+  end
+
+  picker_mod.pick(decks, { prompt = "Reset deck", cfg = cfg }, do_reset)
+end
+
 --- Internal: list deck names (for :Flashcard tab completion).
 function M._deck_names()
   ensure_cfg()

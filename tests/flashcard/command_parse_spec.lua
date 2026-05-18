@@ -10,6 +10,7 @@ describe("command.parse", function()
     assert.same({ verb = "edit", name = nil }, command.parse({ "edit" }))
     assert.same({ verb = "create", name = nil }, command.parse({ "create" }))
     assert.same({ verb = "overview", name = nil }, command.parse({ "overview" }))
+    assert.same({ verb = "reset", name = nil }, command.parse({ "reset" }))
   end)
 
   it("takes the second arg as the deck name for known verbs", function()
@@ -19,6 +20,10 @@ describe("command.parse", function()
     assert.same(
       { verb = "overview", name = "geography" },
       command.parse({ "overview", "geography" })
+    )
+    assert.same(
+      { verb = "reset", name = "geography" },
+      command.parse({ "reset", "geography" })
     )
   end)
 
@@ -37,7 +42,7 @@ describe("command.complete — position 1", function()
     table.sort(matches)
     -- verbs + decks, sorted
     assert.same(
-      { "create", "edit", "geography", "history", "learn", "learning-theory", "overview" },
+      { "create", "edit", "geography", "history", "learn", "learning-theory", "overview", "reset" },
       matches
     )
   end)
@@ -72,6 +77,12 @@ describe("command.complete_arg — position 2", function()
 
   it("returns deck names for overview", function()
     local matches = command.complete_arg("overview", "", names_fn)
+    table.sort(matches)
+    assert.same({ "geography", "history" }, matches)
+  end)
+
+  it("returns deck names for reset", function()
+    local matches = command.complete_arg("reset", "", names_fn)
     table.sort(matches)
     assert.same({ "geography", "history" }, matches)
   end)
